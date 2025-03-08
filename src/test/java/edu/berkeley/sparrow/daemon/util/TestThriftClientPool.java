@@ -15,6 +15,10 @@
  */
 
 package edu.berkeley.sparrow.daemon.util;
+
+import org.junit.Before;  // Make sure this import is added
+import org.mockito.MockitoAnnotations;  // Make sure this import is added
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -37,6 +41,11 @@ public class TestThriftClientPool {
         TAsyncClientManager mgr, TProtocolFactory factory) {
       return mock(TAsyncClient.class);
     }
+  }
+
+  @Before
+  public void setup() {
+      MockitoAnnotations.initMocks(this);  // Use initMocks instead of openMocks
   }
   
   /** Test a very common scenario where we make two thrift function calls to the same
