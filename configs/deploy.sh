@@ -1,14 +1,3 @@
-
-# start the scheduler and node monitor
-java -cp ../target/sparrow-1.0-SNAPSHOT.jar edu.berkeley.sparrow.daemon.SparrowDaemon -c ./sparrow_sleep_app.conf
-
-# start the backend
-java -cp ../target/sparrow-1.0-SNAPSHOT.jar edu.berkeley.sparrow.examples.SimpleBackend -c backend.conf
-
-# start the frontend
-java -cp target/sparrow-1.0-SNAPSHOT.jar edu.berkeley.sparrow.examples.SimpleFrontend -c configs/frontend.conf
-
-
 # each instance of sparrow is both the node monitor and the scheduler, they are inseparable
 # When you register a backend to an instance of sparrow, it is acting as the node monitor
 # when you register a frontend to an instance of sparrow, it is acting as the scheduler
