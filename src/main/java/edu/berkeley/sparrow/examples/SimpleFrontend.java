@@ -47,7 +47,7 @@ import edu.berkeley.sparrow.thrift.TUserGroupInfo;
 public class SimpleFrontend implements FrontendService.Iface {
   /** Amount of time to launch tasks for. */
   public static final String EXPERIMENT_S = "experiment_s";
-  public static final int DEFAULT_EXPERIMENT_S = 300;
+  public static final int DEFAULT_EXPERIMENT_S = 10; // Changed experiment duration to ten seconds for quicker testing
 
   public static final String JOB_ARRIVAL_PERIOD_MILLIS = "job_arrival_period_millis";
   public static final int DEFAULT_JOB_ARRIVAL_PERIOD_MILLIS = 100;

@@ -7,6 +7,10 @@
 # With this in mind, we need to start two instances of sparrow on our local machine, one will act as both
 # a scheduler and a node monitor, the other will just serve as a node monitor
 
+# If you have made any changes to the frontend or backend, you need to recompile:
+mvn compile
+mvn package -Dmaven.test.skip=true
+
 # this starts the instance of sparrow that we will register the frontend and a backend to
 java -cp target/sparrow-1.0-SNAPSHOT.jar edu.berkeley.sparrow.daemon.SparrowDaemon -c configs/sparrow_sleep_app.conf
 
