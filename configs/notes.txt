@@ -1,0 +1,26 @@
+One thing we could do is create a new generate job function that packs a ninth byte into the message buffer, and if this is turned on
+then we run the gang scheduler.
+Actually this is probably a poor route because the message buffer is supposed to be blind to sparrow and we should 
+keep that as is.
+
+
+How will the gang scheduler work? We assume all the tasks as part of the job are in the same gang for simplicity, meaning
+they all need to be ran simultaneously.
+
+It seems like the most straightforward route is to modify ConstrainedTaskPlacer.java
+At line 127 we start iterating through the tasks in the job; we can either make a distinction at the job level
+that all tasks are in a gang, or we can make a distinction at the task level and create a gangID to go with each task.
+
+Either way, we will have a number of tasks that have been marked as a gang.
+
+We want to place all of these tasks on nodes simultaneously. So how do we do this?
+
+The way it currently works is that the nodemonitor gets to the front of its queue and his a reservation, then
+runs the getTask() rpc which returns the next task. What we really want to happen is for the getTask rpc
+to block (?!) until it knows all the other getTasks for the same gang have been called, meaning all the other
+reservations are ready, then return the appropriate "actual" task.
+
+Line 376 in scheduler.java is where getTask takes place. We might have to modify the TaskPlacer class to 
+keep track of the other tasks that have been placed to determine when to stop blocking... we shall see.
+
+You can't be on eduroam wifi when you are running this thing locally or else something with the network doesn't work.
