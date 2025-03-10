@@ -57,11 +57,14 @@ public class SparrowDaemon {
       		"in standalone deployment");
     }
     if (nmPorts.length == 0) {
+      System.out.println("nm ports length 0");
       (new NodeMonitorThrift()).initialize(conf,
           NodeMonitorThrift.DEFAULT_NM_THRIFT_PORT,
           NodeMonitorThrift.DEFAULT_INTERNAL_THRIFT_PORT);
     }
     else {
+      System.out.println("nm ports length not 0");
+
       for (int i = 0; i < nmPorts.length; i++) {
         (new NodeMonitorThrift()).initialize(conf,
             Integer.parseInt(nmPorts[i]), Integer.parseInt(inPorts[i]));
@@ -73,6 +76,7 @@ public class SparrowDaemon {
   }
 
   public static void main(String[] args) throws Exception {
+
     OptionParser parser = new OptionParser();
     parser.accepts("c", "configuration file (required)").
       withRequiredArg().ofType(String.class);
