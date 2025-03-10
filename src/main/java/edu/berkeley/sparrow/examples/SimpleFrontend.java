@@ -208,7 +208,6 @@ public class SimpleFrontend implements FrontendService.Iface {
       pausableScheduler.scheduleAtFixedRate(runnable, 0, arrivalPeriodMillis, TimeUnit.MILLISECONDS);
 
       long trueStartTime = System.currentTimeMillis();
-      LOG.debug("sleeping");
 
       while (messagesSent < NUMBER_OF_MESSAGES) {
         if (shouldBePaused && !pausableScheduler.isPaused())
@@ -220,10 +219,21 @@ public class SimpleFrontend implements FrontendService.Iface {
           Thread.sleep(1);
       }
 
+      LOG.debug("All tasks have been sent!");
+
       taskLauncher.shutdown();
+      try {
+          if (!taskLauncher.awaitTermination(3, TimeUnit.SECONDS)) {
+              taskLauncher.shutdownNow();
+          }
+      } catch (InterruptedException e) {
+          taskLauncher.shutdownNow(); // Force shutdown
+      }
 
       while (messagesSeen < messagesSent)
         Thread.sleep(1);
+
+      LOG.debug("All tasks have been completed!");
 
       // Calculate elapsed time
       long currentTime = System.currentTimeMillis();
@@ -245,7 +255,7 @@ public class SimpleFrontend implements FrontendService.Iface {
     byte[] bytes = Serialization.getByteBufferContents(message);
     ByteBuffer readBuffer = ByteBuffer.wrap(bytes);
     int result = readBuffer.getInt();
-    System.out.println("Got message: " + result);
+    LOG.debug("[RECEIVED] taskID: " + result);
     
     // Remove the message from the hashset if seen
     if (hashSet.contains(result))
@@ -259,5 +269,6 @@ public class SimpleFrontend implements FrontendService.Iface {
 
   public static void main(String[] args) {
     new SimpleFrontend().run(args);
+    System.exit(0);
   }
 }
