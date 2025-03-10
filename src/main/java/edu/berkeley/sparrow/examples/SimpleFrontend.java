@@ -183,6 +183,8 @@ public class SimpleFrontend implements FrontendService.Iface {
       while (System.currentTimeMillis() < startTime + experimentDurationS * 1000) {
         Thread.sleep(100);
       }
+
+      Thread.sleep(1000000);
       taskLauncher.shutdown();
     }
     catch (Exception e) {
@@ -194,7 +196,10 @@ public class SimpleFrontend implements FrontendService.Iface {
   public void frontendMessage(TFullTaskId taskId, int status, ByteBuffer message)
       throws TException {
     // We don't use messages here, so just log it.
-    LOG.debug("Got unexpected message: " + Serialization.getByteBufferContents(message));
+    byte[] bytes = Serialization.getByteBufferContents(message);
+    ByteBuffer readBuffer = ByteBuffer.wrap(bytes);
+    int result = readBuffer.getInt();
+    System.out.println("Got unexpected message: " + result);
   }
 
   public static void main(String[] args) {

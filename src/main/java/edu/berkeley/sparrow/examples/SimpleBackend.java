@@ -93,14 +93,25 @@ public class SimpleBackend implements BackendService.Iface {
 					client.tasksFinished(Lists.newArrayList(task));
           String APP_ID = task.appId;
           ByteBuffer message = ByteBuffer.allocate(4);
-          message.putInt(3);
+          String originalMessage = task.taskId;
+
+          String processedMessage = originalMessage;
+    
+          // Check if the message starts with "G_" and remove it if present
+          if (originalMessage.startsWith("G_")) {
+            processedMessage = originalMessage.substring(2);
+          }
+    
+          // Convert the processed message to an integer
+          int intMessage = Integer.parseInt(processedMessage);
+          message.putInt(intMessage);
+          message.flip();
           client.sendFrontendMessage(APP_ID, task, 1, message);
 				} catch (InterruptedException e) {
 					LOG.error("Error taking a task from the queue: " + e.getMessage());
 				} catch (TException e) {
 					LOG.error("Error with tasksFinished() RPC:" + e.getMessage());
 				}
-
 		  }
 	  }
   }
