@@ -31,6 +31,28 @@ start_and_verify_process() {
   fi
 }
 
+# Cleanup function to terminate processes on interrupts or script completion
+cleanup() {
+  echo "Cleaning up processes..."
+  if [ -f "$pid_file" ]; then
+    while read -r pid; do
+      if ps -p "$pid" > /dev/null; then
+        echo "Terminating process $pid..."
+        kill "$pid" 2>/dev/null || true
+      fi
+    done < "$pid_file"
+    rm -f "$pid_file"
+  fi
+  echo "Cleanup complete."
+}
+
+trap cleanup SIGINT SIGTERM EXIT
+
+# Remove previous log files
+echo "Removing old audit logs..."
+rm -f ./sparrow_audit.*.log
+echo "Old audit logs removed."
+
 # Clean up existing processes
 echo "Cleaning up any existing processes..."
 pkill -f "SparrowDaemon" 2>/dev/null || true
@@ -68,18 +90,13 @@ sleep 3
 
 # Start the frontend (in foreground)
 echo "Starting frontend..."
-java -cp $CLASS_PATH edu.berkeley.sparrow.examples.SimpleFrontend -c configs/frontend.conf
+java -cp $CLASS_PATH edu.berkeley.sparrow.examples.SimpleFrontend -c configs/frontend.conf &
+frontend_pid=$!
+echo "$frontend_pid" >> "$pid_file" 
 
-# This section will execute when the frontend terminates or the script is interrupted
-echo "Cleaning up processes..."
-if [ -f "$pid_file" ]; then
-  while read pid; do
-    kill $pid 2>/dev/null || true
-  done < "$pid_file"
-  rm "$pid_file"
-fi
+wait $frontend_pid
 
-echo "Deployment complete"
+echo "Frontend process exited. Cleaning up..."
 
 # Once you see the message "Main Sparrow daemon started successfully", open a second terminal window.
 # In this second terminal, run the tail command:
