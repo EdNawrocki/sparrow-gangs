@@ -26,6 +26,8 @@ import java.util.Random;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import javax.print.attribute.standard.NumberUpSupported;
+
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
@@ -70,7 +72,7 @@ public class SimpleFrontend implements FrontendService.Iface {
   public static final String DEFAULT_SCHEDULER_HOST = "localhost";
   public static final String SCHEDULER_PORT = "scheduler_port";
 
-  private boolean shouldBePaused; // When we schedule a gang
+  private boolean shouldBePaused; // Determine if frontend should stall 
 
   int messagesSeen = 0;
   int messagesSent = 0;
@@ -87,7 +89,7 @@ public class SimpleFrontend implements FrontendService.Iface {
 
   private SparrowFrontendClient client;
 
-  public int cur_id = 0; // Used to assign a unique ID to all users
+  public int curId = 0; // Used to assign a unique ID to all users
 
   /** A runnable which Spawns a new thread to launch a scheduling request. */
   private class JobLaunchRunnable implements Runnable {
@@ -105,44 +107,53 @@ public class SimpleFrontend implements FrontendService.Iface {
       ByteBuffer message = ByteBuffer.allocate(4);
       message.putInt(taskDurationMillis);
 
-      // Set the number of tasks to a random number between 1 and 2
-      Random random = new Random();
-      int tasksPerJob = random.nextInt(2) + 1;
+      // Set the number of tasks from 1 to configured number randomly
+      int curTasksPerJob = 0;
 
-      if (NUMBER_OF_MESSAGES-cur_id == 1)
-        tasksPerJob = 1;
+      if (NUMBER_OF_MESSAGES - curId <= tasksPerJob){
+        curTasksPerJob = NUMBER_OF_MESSAGES - curId;
+      }
+      else {
+        Random random = new Random();
+        curTasksPerJob = random.nextInt(tasksPerJob) + 1;
+      }
 
-      LOG.debug("Tasks per job: " + tasksPerJob);
+      LOG.debug("[NUM TASKS] in job: " + curTasksPerJob);
 
-      boolean is_gang = false;
+      boolean isGang = false;
 
-      // 2*DEFAULT_GANG_RATE because we only gang schedule jobs of size 2
-      if (tasksPerJob == 2 && Math.random() < (2*DEFAULT_GANG_RATE))
-        is_gang = true;
+      // Determine if we should gang schedule
+      if (curTasksPerJob > 1 && Math.random() < DEFAULT_GANG_RATE){
+        isGang = true;
+      }
+
+      shouldBePaused = isGang;
 
       List<TTaskSpec> tasks = new ArrayList<TTaskSpec>();
-      for (int taskId = 0; taskId < tasksPerJob; taskId++) {
+      
+      // Logging string 
+      String taskIds = (isGang ? "[GANG]" : "[INDEPENDENT]") + " task IDs: ";
+
+      // Set all tasks in job
+      for (int i = 0; i < curTasksPerJob; i++) {
         messagesSent++;
         TTaskSpec spec = new TTaskSpec();
         
-        if (is_gang) {
-          spec.setTaskId("G_" + Integer.toString(cur_id));
-          LOG.debug("Gang with ID: " + cur_id);
-
+        if (isGang) {
+          spec.setTaskId("G_" + curId);
           // This message must be received before we continue
-          hashSet.add(cur_id);
+          hashSet.add(curId);
         }
-
         else {
-          spec.setTaskId(Integer.toString(cur_id));
-          LOG.debug("No Gang with ID: " + cur_id);
+          spec.setTaskId(Integer.toString(curId));
         }
-
-        cur_id++;
-
+        taskIds += curId + ", ";
+        curId++;
         spec.setMessage(message.array());
         tasks.add(spec);
       }
+      LOG.debug(taskIds.substring(0, taskIds.length()-2));
+
       long start = System.currentTimeMillis();
       try {
         client.submitJob(APPLICATION_ID, tasks, USER);
@@ -150,9 +161,7 @@ public class SimpleFrontend implements FrontendService.Iface {
         LOG.error("Scheduling request failed!", e);
       }
       long end = System.currentTimeMillis();
-      LOG.debug("Scheduling request duration " + (end - start));
-
-      shouldBePaused = is_gang;
+      LOG.debug("[SCHEDULING] request duration: " + (end - start) + " ms");
     }
   }
 
@@ -208,7 +217,7 @@ public class SimpleFrontend implements FrontendService.Iface {
         if (!shouldBePaused && pausableScheduler.isPaused())
           pausableScheduler.resume();
 
-        Thread.sleep(1);
+          Thread.sleep(1);
       }
 
       taskLauncher.shutdown();
