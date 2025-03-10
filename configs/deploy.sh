@@ -94,10 +94,19 @@ java -cp $CLASS_PATH edu.berkeley.sparrow.examples.SimpleFrontend -c configs/fro
 frontend_pid=$!
 echo "$frontend_pid" >> "$pid_file" 
 
+# Opens up a background terminal to monitor logs live
+# Too fast to keep up with anyway, can just use logs after completion but left here as an option
+# echo "Opening a new terminal to monitor logs..."
+# if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+#   gnome-terminal -- bash -c "cd $(pwd); tail -f ./logs/Main_Sparrow_daemon.log; exec bash" &
+# elif [[ "$OSTYPE" == "darwin"* ]]; then
+#   osascript -e "tell application \"Terminal\" to do script \"cd $(pwd); tail -f ./logs/Main_Sparrow_daemon.log\"" &
+# elif [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "cygwin"* ]]; then
+#   mintty -e bash -c "cd $(pwd); tail -f ./logs/Main_Sparrow_daemon.log" &
+# else
+#   echo "Manual log monitoring required."
+# fi
+
 wait $frontend_pid
 
 echo "Frontend process exited. Cleaning up..."
-
-# Once you see the message "Main Sparrow daemon started successfully", open a second terminal window.
-# In this second terminal, run the tail command:
-# tail -f ./logs/Main_Sparrow_daemon.log
