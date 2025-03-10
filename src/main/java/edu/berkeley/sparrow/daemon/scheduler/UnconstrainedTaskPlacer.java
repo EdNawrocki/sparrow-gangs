@@ -63,11 +63,15 @@ public class UnconstrainedTaskPlacer implements TaskPlacer {
 
   private double probeRatio;
 
+  public LinkedList<Thread> sleepingThreads;
+
   UnconstrainedTaskPlacer(String requestId, double probeRatio) {
     this.requestId = requestId;
     this.probeRatio = probeRatio;
     unlaunchedTasks = new LinkedList<TTaskLaunchSpec>();
     outstandingReservations = new HashMap<THostPort, Integer>();
+    //keeping track of the threads
+    sleepingThreads = new LinkedList<Thread>();
     cancelled = false;
   }
 
@@ -136,6 +140,8 @@ public class UnconstrainedTaskPlacer implements TaskPlacer {
     } else {
       outstandingReservations.put(nodeMonitorAddress, numOutstandingReservations - 1);
     }
+
+    // if gangTasks.isEmpty() or rather if isGang && unlaunchTasks.isEmpty()
 
     if (unlaunchedTasks.isEmpty()) {
       LOG.debug("Request " + requestId + ", node monitor " + nodeMonitorAddress.toString() +
