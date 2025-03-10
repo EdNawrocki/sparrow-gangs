@@ -16,9 +16,11 @@
 
 package edu.berkeley.sparrow.examples;
 
+import java.util.Set;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -67,6 +69,12 @@ public class SimpleFrontend implements FrontendService.Iface {
   public static final String DEFAULT_SCHEDULER_HOST = "localhost";
   public static final String SCHEDULER_PORT = "scheduler_port";
 
+  private boolean shouldBePaused; // When we schedule a gang
+
+  int messagesSeen = 0;
+  int messagesSent = 0;
+  Set<Integer> hashSet = new HashSet<>();
+
   /**
    * Default application name.
    */
@@ -109,11 +117,15 @@ public class SimpleFrontend implements FrontendService.Iface {
 
       List<TTaskSpec> tasks = new ArrayList<TTaskSpec>();
       for (int taskId = 0; taskId < tasksPerJob; taskId++) {
+        messagesSent++;
         TTaskSpec spec = new TTaskSpec();
         
         if (is_gang) {
           spec.setTaskId("G_" + Integer.toString(cur_id));
           LOG.debug("Gang");
+
+          // This message must be received before we continue
+          hashSet.add(cur_id);
         }
 
         else {
@@ -134,6 +146,8 @@ public class SimpleFrontend implements FrontendService.Iface {
       }
       long end = System.currentTimeMillis();
       LOG.debug("Scheduling request duration " + (end - start));
+
+      shouldBePaused = is_gang;
     }
   }
 
@@ -176,15 +190,25 @@ public class SimpleFrontend implements FrontendService.Iface {
 
       JobLaunchRunnable runnable = new JobLaunchRunnable(tasksPerJob, taskDurationMillis);
       ScheduledThreadPoolExecutor taskLauncher = new ScheduledThreadPoolExecutor(1);
-      taskLauncher.scheduleAtFixedRate(runnable, 0, arrivalPeriodMillis, TimeUnit.MILLISECONDS);
+      PausableScheduler pausableScheduler = new PausableScheduler(taskLauncher);
+      pausableScheduler.scheduleAtFixedRate(runnable, 0, arrivalPeriodMillis, TimeUnit.MILLISECONDS);
 
       long startTime = System.currentTimeMillis();
       LOG.debug("sleeping");
       while (System.currentTimeMillis() < startTime + experimentDurationS * 1000) {
+        if (shouldBePaused && !pausableScheduler.isPaused())
+          pausableScheduler.pause();
+
+        if (!shouldBePaused && pausableScheduler.isPaused())
+          pausableScheduler.resume();
+
+        if (shouldBePaused)
+          startTime += 100;
+
         Thread.sleep(100);
       }
 
-      Thread.sleep(1000000);
+      // Thread.sleep(1000000);
       taskLauncher.shutdown();
     }
     catch (Exception e) {
@@ -199,7 +223,16 @@ public class SimpleFrontend implements FrontendService.Iface {
     byte[] bytes = Serialization.getByteBufferContents(message);
     ByteBuffer readBuffer = ByteBuffer.wrap(bytes);
     int result = readBuffer.getInt();
-    System.out.println("Got unexpected message: " + result);
+    System.out.println("Got message: " + result);
+    
+    // Remove the message from the hashset if seen
+    if (hashSet.contains(result))
+        hashSet.remove(result);
+
+    if (hashSet.isEmpty())
+        shouldBePaused = false;
+
+    messagesSeen++;
   }
 
   public static void main(String[] args) {
