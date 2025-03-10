@@ -51,6 +51,7 @@ public class SimpleFrontend implements FrontendService.Iface {
   /** Amount of time to launch tasks for. */
   public static final String EXPERIMENT_S = "experiment_s";
   public static final int DEFAULT_EXPERIMENT_S = 10; // Changed experiment duration to ten seconds for quicker testing
+  public static final int NUMBER_OF_MESSAGES  = 200; // Number of messages we will send out
   public static final double DEFAULT_GANG_RATE = .2; // Probability is currently 20%
 
   public static final String JOB_ARRIVAL_PERIOD_MILLIS = "job_arrival_period_millis";
@@ -107,6 +108,10 @@ public class SimpleFrontend implements FrontendService.Iface {
       // Set the number of tasks to a random number between 1 and 2
       Random random = new Random();
       int tasksPerJob = random.nextInt(2) + 1;
+
+      if (NUMBER_OF_MESSAGES-cur_id == 1)
+        tasksPerJob = 1;
+
       LOG.debug("Tasks per job: " + tasksPerJob);
 
       boolean is_gang = false;
@@ -193,23 +198,31 @@ public class SimpleFrontend implements FrontendService.Iface {
       PausableScheduler pausableScheduler = new PausableScheduler(taskLauncher);
       pausableScheduler.scheduleAtFixedRate(runnable, 0, arrivalPeriodMillis, TimeUnit.MILLISECONDS);
 
-      long startTime = System.currentTimeMillis();
+      long trueStartTime = System.currentTimeMillis();
       LOG.debug("sleeping");
-      while (System.currentTimeMillis() < startTime + experimentDurationS * 1000) {
+
+      while (messagesSent < NUMBER_OF_MESSAGES) {
         if (shouldBePaused && !pausableScheduler.isPaused())
           pausableScheduler.pause();
 
         if (!shouldBePaused && pausableScheduler.isPaused())
           pausableScheduler.resume();
 
-        if (shouldBePaused)
-          startTime += 100;
-
-        Thread.sleep(100);
+        Thread.sleep(1);
       }
 
-      // Thread.sleep(1000000);
       taskLauncher.shutdown();
+
+      while (messagesSeen < messagesSent)
+        Thread.sleep(1);
+
+      // Calculate elapsed time
+      long currentTime = System.currentTimeMillis();
+      long elapsedTime = currentTime - trueStartTime;
+
+      // Print elapsed time in milliseconds
+      System.out.println("Time elapsed: " + elapsedTime + " ms");
+      return;
     }
     catch (Exception e) {
       LOG.error("Fatal exception", e);

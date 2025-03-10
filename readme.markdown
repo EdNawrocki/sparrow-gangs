@@ -6,6 +6,7 @@ To read more about Sparrow, check out our [paper](http://dl.acm.org/citation.cfm
 
 If you're interested in using Sparrow, we recommend that you join the [Sparrow mailing list](https://groups.google.com/group/sparrow-scheduler-users).
 
+TO RUN THE SIMPLE SIMULATION: `./configs/deploy.sh`
 
 Code Layout
 -------------------------

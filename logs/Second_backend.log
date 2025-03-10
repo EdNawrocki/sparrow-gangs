@@ -1,77 +1,247 @@
 0 [main] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - debug logging on
-8 [main] DEBUG org.apache.commons.configuration.PropertiesConfiguration  - FileName set to configs/backend-2.conf
+9 [main] DEBUG org.apache.commons.configuration.PropertiesConfiguration  - FileName set to configs/backend-2.conf
 9 [main] DEBUG org.apache.commons.configuration.ConfigurationUtils  - ConfigurationUtils.locate(): base is null, name is configs/backend-2.conf
 9 [main] DEBUG org.apache.commons.configuration.DefaultFileSystem  - Could not locate file configs/backend-2.conf at null: no protocol: configs/backend-2.conf
 10 [main] DEBUG org.apache.commons.configuration.ConfigurationUtils  - Loading configuration from the path configs/backend-2.conf
 10 [main] DEBUG org.apache.commons.configuration.PropertiesConfiguration  - Base path set to file:///Users/simon/Desktop/sparrow-gangs/configs/backend-2.conf
-20 [main] INFO edu.berkeley.sparrow.daemon.util.TServers  - Staring async thrift server of type: class edu.berkeley.sparrow.thrift.BackendService$Processor on port 20102
+21 [main] INFO edu.berkeley.sparrow.daemon.util.TServers  - Staring async thrift server of type: class edu.berkeley.sparrow.thrift.BackendService$Processor on port 20102
 We are trying to connect to 
 localhost
 20501
-40 [main] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Client successfully registered
-6120 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 0 at 1741582604749
-6189 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_1 at 1741582604818
-6189 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_2 at 1741582604818
-6290 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 3 at 1741582604919
-8125 [pool-1-thread-1] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-8140 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 6 at 1741582606769
-8194 [pool-1-thread-3] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-8194 [pool-1-thread-2] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-8199 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_9 at 1741582606828
-8295 [pool-1-thread-4] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-10144 [pool-1-thread-5] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
-10201 [pool-1-thread-6] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
-10395 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 11 at 1741582609023
-10498 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 12 at 1741582609127
-10593 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 13 at 1741582609222
-10688 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 14 at 1741582609317
-12397 [pool-1-thread-7] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
-12403 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 17 at 1741582611032
-12504 [pool-1-thread-8] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-12511 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 19 at 1741582611140
-12596 [pool-1-thread-9] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2002ms
-12604 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 21 at 1741582611233
-12694 [pool-1-thread-10] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2006ms
-12700 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 22 at 1741582611329
-14409 [pool-1-thread-11] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-14415 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_25 at 1741582613044
-14517 [pool-1-thread-12] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-14609 [pool-1-thread-13] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-14705 [pool-1-thread-14] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
-16421 [pool-1-thread-15] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-16600 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 27 at 1741582615229
-16601 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 26 at 1741582615230
-16692 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 28 at 1741582615321
-16792 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 29 at 1741582615421
-18602 [pool-1-thread-1] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
-18603 [pool-1-thread-16] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2003ms
-18610 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 34 at 1741582617239
-18611 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 35 at 1741582617240
-18698 [pool-1-thread-3] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-18702 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_36 at 1741582617331
-18793 [pool-1-thread-2] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
-18798 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_37 at 1741582617427
-20611 [pool-1-thread-4] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2000ms
-20611 [pool-1-thread-5] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2000ms
-20707 [pool-1-thread-6] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-20803 [pool-1-thread-7] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-20887 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 38 at 1741582619516
-20989 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 39 at 1741582619618
-21090 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 40 at 1741582619719
-21189 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 41 at 1741582619818
-22892 [pool-1-thread-8] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-22897 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 45 at 1741582621526
-22993 [pool-1-thread-9] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
-22999 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 47 at 1741582621628
-23095 [pool-1-thread-10] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
-23099 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 49 at 1741582621728
-23194 [pool-1-thread-11] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-23198 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 50 at 1741582621827
-24903 [pool-1-thread-12] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
-24905 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_54 at 1741582623534
-25005 [pool-1-thread-13] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-25007 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_55 at 1741582623636
-25103 [pool-1-thread-14] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
-25203 [pool-1-thread-15] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-26910 [pool-1-thread-1] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
-27012 [pool-1-thread-16] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+41 [main] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Client successfully registered
+6095 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 0 at 1741583767429
+6165 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 1 at 1741583767499
+6266 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 2 at 1741583767600
+6468 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 5 at 1741583767802
+8101 [pool-1-thread-1] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2006ms
+8118 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 7 at 1741583769452
+8166 [pool-1-thread-2] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+8168 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 9 at 1741583769502
+8272 [pool-1-thread-3] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2006ms
+8276 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 10 at 1741583769610
+8473 [pool-1-thread-4] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+8483 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 13 at 1741583769817
+10119 [pool-1-thread-5] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2000ms
+10125 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 16 at 1741583771459
+10174 [pool-1-thread-6] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+10177 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 17 at 1741583771511
+10281 [pool-1-thread-7] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
+10285 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 18 at 1741583771619
+10485 [pool-1-thread-8] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2002ms
+10488 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 21 at 1741583771822
+12127 [pool-1-thread-9] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+12133 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_24 at 1741583773467
+12178 [pool-1-thread-10] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+12286 [pool-1-thread-11] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+12494 [pool-1-thread-12] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+14139 [pool-1-thread-13] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+14370 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 26 at 1741583775704
+14466 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_27 at 1741583775800
+16376 [pool-1-thread-14] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2006ms
+16470 [pool-1-thread-15] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+16564 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 29 at 1741583777898
+16665 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 30 at 1741583777999
+16767 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 32 at 1741583778101
+16870 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_34 at 1741583778204
+18570 [pool-1-thread-16] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+18671 [pool-1-thread-1] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+18769 [pool-1-thread-2] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2002ms
+18872 [pool-1-thread-3] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+18963 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 35 at 1741583780297
+19064 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_37 at 1741583780398
+20968 [pool-1-thread-4] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+21070 [pool-1-thread-5] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+21172 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 39 at 1741583782506
+21173 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 40 at 1741583782507
+21262 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 41 at 1741583782596
+21366 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 42 at 1741583782700
+23174 [pool-1-thread-7] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+23178 [pool-1-thread-6] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+23180 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_45 at 1741583784514
+23263 [pool-1-thread-8] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+23367 [pool-1-thread-9] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+25184 [pool-1-thread-10] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
+25266 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_46 at 1741583786600
+27267 [pool-1-thread-11] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2000ms
+27373 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 48 at 1741583788707
+27470 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 49 at 1741583788804
+27568 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 51 at 1741583788902
+27669 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 52 at 1741583789003
+29374 [pool-1-thread-12] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+29478 [pool-1-thread-13] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+29570 [pool-1-thread-14] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+29675 [pool-1-thread-15] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+29969 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 56 at 1741583791303
+30069 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_57 at 1741583791403
+30070 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_58 at 1741583791403
+31975 [pool-1-thread-16] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+32074 [pool-1-thread-1] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+32075 [pool-1-thread-2] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+32168 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_59 at 1741583793502
+34172 [pool-1-thread-3] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2003ms
+34272 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 61 at 1741583795606
+34367 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 62 at 1741583795701
+34467 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 64 at 1741583795801
+34568 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_65 at 1741583795902
+36277 [pool-1-thread-4] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+36369 [pool-1-thread-5] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+36472 [pool-1-thread-7] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+36570 [pool-1-thread-6] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+36667 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 67 at 1741583798001
+36766 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 68 at 1741583798100
+36868 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 69 at 1741583798202
+36966 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 70 at 1741583798300
+38669 [pool-1-thread-8] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+38675 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_75 at 1741583800009
+38770 [pool-1-thread-9] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2003ms
+38869 [pool-1-thread-10] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+38972 [pool-1-thread-11] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+40681 [pool-1-thread-12] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+40774 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 76 at 1741583802108
+40860 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 78 at 1741583802194
+40964 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_79 at 1741583802298
+42777 [pool-1-thread-13] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2003ms
+42866 [pool-1-thread-14] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+42970 [pool-1-thread-15] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+43066 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 81 at 1741583804400
+43167 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 82 at 1741583804501
+43267 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 83 at 1741583804601
+43268 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 84 at 1741583804602
+45072 [pool-1-thread-16] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+45077 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_89 at 1741583806411
+45168 [pool-1-thread-1] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+45270 [pool-1-thread-3] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2002ms
+45270 [pool-1-thread-2] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2002ms
+47083 [pool-1-thread-4] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+47174 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_90 at 1741583808508
+47174 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_91 at 1741583808508
+49179 [pool-1-thread-5] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+49179 [pool-1-thread-7] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+49266 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 92 at 1741583810600
+49367 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 93 at 1741583810701
+49467 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 94 at 1741583810801
+49568 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 95 at 1741583810902
+51267 [pool-1-thread-6] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2000ms
+51273 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 100 at 1741583812607
+51372 [pool-1-thread-8] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
+51377 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 101 at 1741583812711
+51472 [pool-1-thread-9] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+51479 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 103 at 1741583812813
+51570 [pool-1-thread-10] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2002ms
+51574 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 104 at 1741583812908
+53276 [pool-1-thread-11] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2003ms
+53280 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_106 at 1741583814614
+53382 [pool-1-thread-12] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+53480 [pool-1-thread-13] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+53577 [pool-1-thread-14] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2002ms
+55282 [pool-1-thread-15] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+55369 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_107 at 1741583816703
+55369 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_108 at 1741583816703
+57370 [pool-1-thread-1] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2000ms
+57374 [pool-1-thread-16] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+57467 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_109 at 1741583818801
+59469 [pool-1-thread-3] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+59568 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 111 at 1741583820902
+59667 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 113 at 1741583821001
+59764 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 114 at 1741583821097
+59868 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_115 at 1741583821202
+61573 [pool-1-thread-2] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2003ms
+61669 [pool-1-thread-4] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+61769 [pool-1-thread-5] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+61869 [pool-1-thread-7] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+61972 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 117 at 1741583823306
+62067 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 118 at 1741583823401
+62163 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 119 at 1741583823497
+62266 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_120 at 1741583823599
+63978 [pool-1-thread-6] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+64069 [pool-1-thread-8] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2002ms
+64166 [pool-1-thread-9] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2003ms
+64267 [pool-1-thread-10] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+64366 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 122 at 1741583825700
+64466 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 124 at 1741583825800
+64467 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 123 at 1741583825801
+64562 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 125 at 1741583825896
+66371 [pool-1-thread-11] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+66376 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 130 at 1741583827710
+66468 [pool-1-thread-13] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+66472 [pool-1-thread-12] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+66472 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_131 at 1741583827806
+66473 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_132 at 1741583827807
+66563 [pool-1-thread-14] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+68377 [pool-1-thread-15] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2000ms
+68476 [pool-1-thread-1] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
+68479 [pool-1-thread-16] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+68571 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 133 at 1741583829905
+68667 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 135 at 1741583830001
+68767 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 137 at 1741583830101
+68862 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 138 at 1741583830196
+70574 [pool-1-thread-3] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2002ms
+70579 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 141 at 1741583831913
+70667 [pool-1-thread-2] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2000ms
+70671 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 143 at 1741583832005
+70772 [pool-1-thread-4] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
+70775 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 145 at 1741583832109
+70867 [pool-1-thread-5] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+70869 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 146 at 1741583832203
+72584 [pool-1-thread-7] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+72589 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 149 at 1741583833923
+72677 [pool-1-thread-6] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+72682 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 151 at 1741583834016
+72780 [pool-1-thread-8] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+72781 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 153 at 1741583834115
+72874 [pool-1-thread-9] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
+72875 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 155 at 1741583834209
+74594 [pool-1-thread-10] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+74599 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 158 at 1741583835933
+74684 [pool-1-thread-11] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+74687 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 159 at 1741583836021
+74787 [pool-1-thread-13] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2006ms
+74791 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 161 at 1741583836125
+74877 [pool-1-thread-12] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+74881 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 162 at 1741583836215
+76604 [pool-1-thread-14] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
+76610 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 166 at 1741583837944
+76693 [pool-1-thread-15] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+76697 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 168 at 1741583838031
+76791 [pool-1-thread-1] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2000ms
+76795 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 169 at 1741583838129
+76886 [pool-1-thread-16] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+76890 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 170 at 1741583838224
+78615 [pool-1-thread-3] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+78618 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 174 at 1741583839952
+78703 [pool-1-thread-2] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+78704 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 176 at 1741583840038
+78800 [pool-1-thread-4] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+78802 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 177 at 1741583840136
+78895 [pool-1-thread-5] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+78896 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 178 at 1741583840230
+80624 [pool-1-thread-7] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+80627 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_180 at 1741583841961
+80709 [pool-1-thread-6] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+80807 [pool-1-thread-8] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+80901 [pool-1-thread-9] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+82632 [pool-1-thread-10] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+82669 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 181 at 1741583844003
+82766 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 182 at 1741583844100
+82866 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 183 at 1741583844200
+82967 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 184 at 1741583844301
+84674 [pool-1-thread-11] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+84678 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task G_186 at 1741583846012
+84767 [pool-1-thread-13] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2001ms
+84871 [pool-1-thread-12] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+84969 [pool-1-thread-14] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2002ms
+86683 [pool-1-thread-15] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+86763 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 187 at 1741583848097
+86862 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 188 at 1741583848196
+86967 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 190 at 1741583848301
+86967 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 189 at 1741583848301
+88768 [pool-1-thread-1] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+88773 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 195 at 1741583850107
+88868 [pool-1-thread-16] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+88869 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 196 at 1741583850203
+88972 [pool-1-thread-3] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+88972 [pool-1-thread-2] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2004ms
+88973 [Thread-1] INFO edu.berkeley.sparrow.examples.SimpleBackend  - Submitting task 198 at 1741583850307
+90776 [pool-1-thread-4] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2003ms
+90875 [pool-1-thread-5] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
+90979 [pool-1-thread-7] DEBUG edu.berkeley.sparrow.examples.SimpleBackend  - Task completed in 2005ms
