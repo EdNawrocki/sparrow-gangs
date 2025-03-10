@@ -27,6 +27,7 @@
  import java.util.Set;
  import java.util.concurrent.ConcurrentMap;
  import java.util.concurrent.atomic.AtomicInteger;
+ import java.util.LinkedList;
  
  import org.apache.commons.configuration.Configuration;
  import org.apache.log4j.Logger;
@@ -374,7 +375,7 @@
    }
  
    public List<TTaskLaunchSpec> getTask(
-       String requestId, THostPort nodeMonitorAddress) {
+       String requestId, THostPort nodeMonitorAddress) throws TException {
      /* TODO: Consider making this synchronized to avoid the need for synchronization in
       * the task placers (although then we'd lose the ability to parallelize over task placers). */
      LOG.debug(Logging.functionCall(requestId, nodeMonitorAddress));
@@ -405,7 +406,28 @@
       
        if (id.charAt(0) == 'G') {
         LOG.debug("Gang!");
-       }
+
+       /*
+        * we need to block here, and wait until all the threads are ready
+        * the sleeping threads can synchronously register themselves to the task placer
+        * object, then the last one can recognize everyone is ready and fire.
+        * 
+        */ 
+
+        int numTasks = ((UnconstrainedTaskPlacer)taskPlacer).unlaunchedTasks.size();
+        
+        if (numTasks > ((UnconstrainedTaskPlacer)taskPlacer).sleepingThreads.size()) {
+          try {
+          sleepThreadIndefinitely(taskPlacer);
+          } catch (InterruptedException e) {
+            // Handle the exception - maybe wrap it in a TException or return empty list
+            throw new TException("Task retrieval interrupted", e);
+            // Or: Thread.currentThread().interrupt(); return Collections.emptyList();
+          }
+        } else {
+          wakeAllThreads(taskPlacer);
+        }
+      }
  
        if (taskPlacer.allTasksPlaced()) {
          LOG.debug("All tasks placed for request " + requestId);
@@ -477,4 +499,56 @@
        LOG.error("Error launching message on frontend: " + app, e);
      }
    }
+
+   private void sleepThreadIndefinitely(TaskPlacer taskPlacer) throws InterruptedException {
+     Thread currentThread = Thread.currentThread();
+
+     LinkedList<Thread> sleepingThreads = ((UnconstrainedTaskPlacer)taskPlacer).sleepingThreads;
+
+     // Add the current thread to the linked list
+     synchronized (sleepingThreads) {
+       sleepingThreads.add(currentThread);
+     }
+
+     try {
+       // This makes the thread wait indefinitely until someone calls notify()
+       synchronized (currentThread) {
+         currentThread.wait();
+       }
+     } finally {
+       // Remove the thread from the list when it wakes up
+       synchronized (sleepingThreads) {
+         sleepingThreads.remove(currentThread);
+       }
+     }
+   }
+
+   /**
+    * Wakes up all threads in the sleepingThreads list
+    */
+   private void wakeAllThreads(TaskPlacer taskPlacer) {
+     // Get a reference to the list of sleeping threads
+     LinkedList<Thread> sleepingThreads = ((UnconstrainedTaskPlacer)taskPlacer).sleepingThreads;
+
+     // Create a copy to avoid concurrent modification issues
+     LinkedList<Thread> threadsToWake;
+     synchronized (sleepingThreads) {
+       // Make a copy of the list to safely iterate through
+       threadsToWake = new LinkedList<Thread>(sleepingThreads);
+     }
+
+     // Wake each thread
+     for (Thread thread : threadsToWake) {
+       synchronized (thread) {
+         // Notify the thread to wake up
+         thread.notify();
+       }
+
+       // For debugging/logging purposes
+       System.out.println("Notified thread: " + thread.getName());
+     }
+   }
+
+
+
  }

@@ -67,7 +67,7 @@ public class SchedulerThrift implements SchedulerService.Iface, GetTaskService.I
         DEFAULT_GET_TASK_PORT);
     GetTaskService.Processor<GetTaskService.Iface> getTaskprocessor =
         new GetTaskService.Processor<GetTaskService.Iface>(this);
-    TServers.launchSingleThreadThriftServer(getTaskPort, getTaskprocessor);
+    TServers.launchThreadedThriftServer(getTaskPort, 8, getTaskprocessor);
   }
 
   @Override
