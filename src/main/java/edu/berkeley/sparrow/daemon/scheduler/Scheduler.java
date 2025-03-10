@@ -28,6 +28,7 @@
  import java.util.concurrent.ConcurrentMap;
  import java.util.concurrent.atomic.AtomicInteger;
  import java.util.LinkedList;
+ import java.util.concurrent.locks.ReentrantLock;
  
  import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
@@ -115,6 +116,9 @@ import org.apache.log4j.Logger;
    private int spreadEvenlyTaskSetSize;
  
    private Configuration conf;
+
+   // lock for gang scheduling
+   private final ReentrantLock lock = new ReentrantLock();
  
    public void initialize(Configuration conf, InetSocketAddress socket) throws IOException {
      address = Network.socketAddressToThrift(socket);
@@ -386,8 +390,10 @@ import org.apache.log4j.Logger;
            "unplaced tasks");
        return Lists.newArrayList();
      }
- 
-     synchronized(taskPlacer) {
+     LOG.debug("Just about to go into synchronized ");
+
+     //synchronized(taskPlacer) {
+     lock.lock(); // Explicitly acquire the lock
        List<TTaskLaunchSpec> taskLaunchSpecs = taskPlacer.assignTask(nodeMonitorAddress);
        if (taskLaunchSpecs == null || taskLaunchSpecs.size() > 1) {
          LOG.error("Received invalid task placement for request " + requestId + ": " +
@@ -415,9 +421,11 @@ import org.apache.log4j.Logger;
         * 
         */ 
 
-        int numTasks = ((UnconstrainedTaskPlacer)taskPlacer).unlaunchedTasks.size();
+        //int numTasks = ((UnconstrainedTaskPlacer)taskPlacer).unlaunchedTasks.size();
+
+        int sleptThreads = ((UnconstrainedTaskPlacer)taskPlacer).sleepingThreads.size();
         
-        if (numTasks > ((UnconstrainedTaskPlacer)taskPlacer).sleepingThreads.size()) {
+        if (sleptThreads == 0) {
           try {
             LOG.debug("Thread is not the last to get_task for this gang, going to sleep.");
           sleepThreadIndefinitely(taskPlacer);
@@ -443,8 +451,11 @@ import org.apache.log4j.Logger;
            }
          }
        }
+       if (lock.isHeldByCurrentThread()) {
+         lock.unlock();
+       }
        return taskLaunchSpecs;
-     }
+     //}
    }
  
    /**
@@ -515,6 +526,7 @@ import org.apache.log4j.Logger;
 
      try {
        // This makes the thread wait indefinitely until someone calls notify()
+       lock.unlock();
        synchronized (currentThread) {
          currentThread.wait();
        }

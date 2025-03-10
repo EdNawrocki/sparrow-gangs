@@ -5,3 +5,5 @@ target/
 *.swp
 *.pyc
 .vscode
+sparrow_audit*
+*.log
