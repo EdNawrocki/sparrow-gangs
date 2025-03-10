@@ -51,7 +51,7 @@ public class SimpleFrontend implements FrontendService.Iface {
   /** Amount of time to launch tasks for. */
   public static final String EXPERIMENT_S = "experiment_s";
   public static final int DEFAULT_EXPERIMENT_S = 10; // Changed experiment duration to ten seconds for quicker testing
-  public static final int NUMBER_OF_MESSAGES  = 200; // Number of messages we will send out
+  public static final int NUMBER_OF_MESSAGES  = 100; // Number of messages we will send out
   public static final double DEFAULT_GANG_RATE = .2; // Probability is currently 20%
 
   public static final String JOB_ARRIVAL_PERIOD_MILLIS = "job_arrival_period_millis";
@@ -127,7 +127,7 @@ public class SimpleFrontend implements FrontendService.Iface {
         
         if (is_gang) {
           spec.setTaskId("G_" + Integer.toString(cur_id));
-          LOG.debug("Gang");
+          LOG.debug("Gang with ID: " + cur_id);
 
           // This message must be received before we continue
           hashSet.add(cur_id);
@@ -135,7 +135,7 @@ public class SimpleFrontend implements FrontendService.Iface {
 
         else {
           spec.setTaskId(Integer.toString(cur_id));
-          LOG.debug("No Gang");
+          LOG.debug("No Gang with ID: " + cur_id);
         }
 
         cur_id++;
