@@ -20,6 +20,7 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -48,6 +49,7 @@ public class SimpleFrontend implements FrontendService.Iface {
   /** Amount of time to launch tasks for. */
   public static final String EXPERIMENT_S = "experiment_s";
   public static final int DEFAULT_EXPERIMENT_S = 10; // Changed experiment duration to ten seconds for quicker testing
+  public static final double DEFAULT_GANG_RATE = .2; // Probability is currently 20%
 
   public static final String JOB_ARRIVAL_PERIOD_MILLIS = "job_arrival_period_millis";
   public static final int DEFAULT_JOB_ARRIVAL_PERIOD_MILLIS = 100;
@@ -92,10 +94,31 @@ public class SimpleFrontend implements FrontendService.Iface {
       ByteBuffer message = ByteBuffer.allocate(4);
       message.putInt(taskDurationMillis);
 
+      // Set the number of tasks to a random number between 1 and 2
+      Random random = new Random();
+      int tasksPerJob = random.nextInt(2) + 1;
+      LOG.debug("Tasks per job: " + tasksPerJob);
+
+      boolean is_gang = false;
+
+      // 2*DEFAULT_GANG_RATE because we only gang schedule jobs of size 2
+      if (tasksPerJob == 2 && Math.random() < (2*DEFAULT_GANG_RATE))
+        is_gang = true;
+
       List<TTaskSpec> tasks = new ArrayList<TTaskSpec>();
       for (int taskId = 0; taskId < tasksPerJob; taskId++) {
         TTaskSpec spec = new TTaskSpec();
-        spec.setTaskId(Integer.toString(taskId));
+        
+        if (is_gang) {
+          spec.setTaskId("G_" + Integer.toString(taskId));
+          LOG.debug("Gang");
+        }
+
+        else {
+          spec.setTaskId(Integer.toString(taskId));
+          LOG.debug("No Gang");
+        }
+
         spec.setMessage(message.array());
         tasks.add(spec);
       }
