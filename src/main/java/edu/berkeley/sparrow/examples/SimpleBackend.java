@@ -91,11 +91,16 @@ public class SimpleBackend implements BackendService.Iface {
 		  	try {
 		  		TFullTaskId task = finishedTasks.take();
 					client.tasksFinished(Lists.newArrayList(task));
+          String APP_ID = task.appId;
+          ByteBuffer message = ByteBuffer.allocate(4);
+          message.putInt(3);
+          client.sendFrontendMessage(APP_ID, task, 1, message);
 				} catch (InterruptedException e) {
 					LOG.error("Error taking a task from the queue: " + e.getMessage());
 				} catch (TException e) {
 					LOG.error("Error with tasksFinished() RPC:" + e.getMessage());
 				}
+
 		  }
 	  }
   }
@@ -135,6 +140,9 @@ public class SimpleBackend implements BackendService.Iface {
   public void initialize(int listenPort, String nodeMonitorHost, int nodeMonitorPort) {
     // Register server.
     try {
+      System.out.println("We are trying to connect to ");
+      System.out.println(nodeMonitorHost);
+      System.out.println(nodeMonitorPort);
 			client = TClients.createBlockingNmClient(nodeMonitorHost, nodeMonitorPort);
 		} catch (IOException e) {
 			LOG.debug("Error creating Thrift client: " + e.getMessage());
