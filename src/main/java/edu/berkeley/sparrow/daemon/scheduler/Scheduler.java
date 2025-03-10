@@ -30,7 +30,8 @@
  import java.util.LinkedList;
  
  import org.apache.commons.configuration.Configuration;
- import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.log4j.Logger;
  import org.apache.thrift.TException;
  import org.apache.thrift.async.AsyncMethodCallback;
  
@@ -418,7 +419,9 @@
         
         if (numTasks > ((UnconstrainedTaskPlacer)taskPlacer).sleepingThreads.size()) {
           try {
+            LOG.debug("Thread is not the last to get_task for this gang, going to sleep.");
           sleepThreadIndefinitely(taskPlacer);
+          LOG.debug("Sleeping thread awoke.");
           } catch (InterruptedException e) {
             // Handle the exception - maybe wrap it in a TException or return empty list
             throw new TException("Task retrieval interrupted", e);
