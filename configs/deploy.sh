@@ -1,27 +1,86 @@
-# each instance of sparrow is both the node monitor and the scheduler, they are inseparable
-# When you register a backend to an instance of sparrow, it is acting as the node monitor
-# when you register a frontend to an instance of sparrow, it is acting as the scheduler
-# the same instance of sparrow can be acting as both a scheduler and a node monitor, but these two
-# components just *happen* to be on the same machine, they don't directly communicate
+#!/bin/bash
 
-# With this in mind, we need to start two instances of sparrow on our local machine, one will act as both
-# a scheduler and a node monitor, the other will just serve as a node monitor
+# Set up error handling
+set -e  # Exit immediately if a command fails
 
-# If you have made any changes to the frontend or backend, you need to recompile:
-mvn compile
-mvn package -Dmaven.test.skip=true
+# Function to check if a process is running and capture its output
+start_and_verify_process() {
+  local description=$1
+  local command=$2
+  local log_file="./logs/$(echo $description | tr ' ' '_').log"
+  
+  # Create logs directory if it doesn't exist
+  mkdir -p ./logs
+  
+  echo "Starting $description..."
+  # Start the process and redirect output to log file
+  eval "$command > $log_file 2>&1 &"
+  local pid=$!
+  
+  # Wait a moment and check if process is still running
+  sleep 3
+  if ps -p $pid > /dev/null; then
+    echo "$description started successfully (PID: $pid)"
+    echo $pid >> $pid_file
+    return 0
+  else
+    echo "ERROR: $description failed to start or crashed immediately."
+    echo "Last few lines of log:"
+    tail -n 10 $log_file
+    return 1
+  fi
+}
 
-# this starts the instance of sparrow that we will register the frontend and a backend to
-java -cp target/sparrow-1.0-SNAPSHOT.jar edu.berkeley.sparrow.daemon.SparrowDaemon -c configs/sparrow_sleep_app.conf &
+# Clean up existing processes
+echo "Cleaning up any existing processes..."
+pkill -f "SparrowDaemon" 2>/dev/null || true
+pkill -f "SimpleBackend" 2>/dev/null || true
+pkill -f "SimpleFrontend" 2>/dev/null || true
+sleep 2
 
-# this starts the instance of sparrow that will only be acting as a node monitor
-java -cp target/sparrow-1.0-SNAPSHOT.jar edu.berkeley.sparrow.daemon.SparrowDaemon -c configs/nm-1.conf &
+# Compile and package
+echo "Compiling and packaging the application..."
+mvn compile || { echo "Compilation failed"; exit 1; }
+mvn package -Dmaven.test.skip=true || { echo "Packaging failed"; exit 1; }
 
-# this will register a backend to nm-1
-java -cp target/sparrow-1.0-SNAPSHOT.jar edu.berkeley.sparrow.examples.SimpleBackend -c configs/backend.conf &
+# Store PIDs for later cleanup
+pid_file=$(mktemp)
+echo "PIDs will be stored in $pid_file"
 
-# this will register a backend to sparrow_sleep_app
-java -cp target/sparrow-1.0-SNAPSHOT.jar edu.berkeley.sparrow.examples.SimpleBackend -c configs/backend-2.conf &
+# Define the class path
+CLASS_PATH="target/sparrow-1.0-SNAPSHOT.jar"
 
-# this will register the frontend to sparrow_sleep_app and job scheduling will begin
-java -cp target/sparrow-1.0-SNAPSHOT.jar edu.berkeley.sparrow.examples.SimpleFrontend -c configs/frontend.conf
+# Start the main Sparrow daemon (scheduler + node monitor)
+start_and_verify_process "Main Sparrow daemon" "java -cp $CLASS_PATH edu.berkeley.sparrow.daemon.SparrowDaemon -c configs/sparrow_sleep_app.conf" || exit 1
+sleep 5  # Give some additional time to fully initialize
+
+# Start the second Sparrow daemon (node monitor only)
+start_and_verify_process "Secondary Sparrow daemon" "java -cp $CLASS_PATH edu.berkeley.sparrow.daemon.SparrowDaemon -c configs/nm-1.conf" || exit 1
+sleep 5  # Give some additional time to fully initialize
+
+# Start the first backend
+start_and_verify_process "First backend" "java -cp $CLASS_PATH edu.berkeley.sparrow.examples.SimpleBackend -c configs/backend.conf" || exit 1
+sleep 3
+
+# Start the second backend
+start_and_verify_process "Second backend" "java -cp $CLASS_PATH edu.berkeley.sparrow.examples.SimpleBackend -c configs/backend-2.conf" || exit 1
+sleep 3
+
+# Start the frontend (in foreground)
+echo "Starting frontend..."
+java -cp $CLASS_PATH edu.berkeley.sparrow.examples.SimpleFrontend -c configs/frontend.conf
+
+# This section will execute when the frontend terminates or the script is interrupted
+echo "Cleaning up processes..."
+if [ -f "$pid_file" ]; then
+  while read pid; do
+    kill $pid 2>/dev/null || true
+  done < "$pid_file"
+  rm "$pid_file"
+fi
+
+echo "Deployment complete"
+
+# Once you see the message "Main Sparrow daemon started successfully", open a second terminal window.
+# In this second terminal, run the tail command:
+# tail -f ./logs/Main_Sparrow_daemon.log
