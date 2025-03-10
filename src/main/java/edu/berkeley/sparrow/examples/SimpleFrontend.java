@@ -78,6 +78,8 @@ public class SimpleFrontend implements FrontendService.Iface {
 
   private SparrowFrontendClient client;
 
+  public int cur_id = 0; // Used to assign a unique ID to all users
+
   /** A runnable which Spawns a new thread to launch a scheduling request. */
   private class JobLaunchRunnable implements Runnable {
     private int tasksPerJob;
@@ -110,14 +112,16 @@ public class SimpleFrontend implements FrontendService.Iface {
         TTaskSpec spec = new TTaskSpec();
         
         if (is_gang) {
-          spec.setTaskId("G_" + Integer.toString(taskId));
+          spec.setTaskId("G_" + Integer.toString(cur_id));
           LOG.debug("Gang");
         }
 
         else {
-          spec.setTaskId(Integer.toString(taskId));
+          spec.setTaskId(Integer.toString(cur_id));
           LOG.debug("No Gang");
         }
+
+        cur_id++;
 
         spec.setMessage(message.array());
         tasks.add(spec);
