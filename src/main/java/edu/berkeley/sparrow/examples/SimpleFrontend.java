@@ -20,6 +20,7 @@ import java.util.Set;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -78,10 +79,6 @@ public class SimpleFrontend implements FrontendService.Iface {
 
   private boolean shouldBePaused; // Determine if frontend should stall 
 
-  int messagesSeen = 0;
-  int messagesSent = 0;
-  Set<String> hashSet = new HashSet<>();
-
   /**
    * Default application name.
    */
@@ -94,6 +91,9 @@ public class SimpleFrontend implements FrontendService.Iface {
   private SparrowFrontendClient client;
 
   public int curId = 0; // Used to assign a unique ID to all users
+  public int messagesSeen = 0;
+  public int messagesSent = 0;
+  public Set<String> hashSet = Collections.synchronizedSet(new HashSet<String>());
 
   /** A runnable which Spawns a new thread to launch a scheduling request. */
   private class JobLaunchRunnable implements Runnable {
@@ -262,15 +262,24 @@ public class SimpleFrontend implements FrontendService.Iface {
     byte[] bytes = new byte[message.remaining()];
     message.get(bytes);
     String receivedTaskId = new String(bytes);
-    LOG.debug("[RECEIVED] taskID: " + receivedTaskId);
+    LOG.debug("[RECEIVED] taskID: " + receivedTaskId + " with [HASHSET] size: " + hashSet.size());
+    LOG.debug("[HASHSET OBJECT] has hash: " + System.identityHashCode(hashSet));
     
     // Remove the message from the hashset if seen
     if (hashSet.contains(receivedTaskId))
         hashSet.remove(receivedTaskId);
 
-        
-    if (hashSet.isEmpty())
+    
+    if (hashSet.isEmpty()){
         shouldBePaused = false;
+    }
+    else { // For debugging 
+      String res = "";
+      for (String s : hashSet){
+        res += s + ", ";
+      }
+      LOG.debug("[HASHSET] contains: " + res.substring(0, res.length()-2));
+    }
 
     messagesSeen++;
   }
