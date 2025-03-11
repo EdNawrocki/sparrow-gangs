@@ -392,70 +392,68 @@ import org.apache.log4j.Logger;
      }
      LOG.debug("Just about to go into synchronized ");
 
-     //synchronized(taskPlacer) {
      lock.lock(); // Explicitly acquire the lock
-       List<TTaskLaunchSpec> taskLaunchSpecs = taskPlacer.assignTask(nodeMonitorAddress);
-       if (taskLaunchSpecs == null || taskLaunchSpecs.size() > 1) {
-         LOG.error("Received invalid task placement for request " + requestId + ": " +
-                   taskLaunchSpecs.toString());
-         return Lists.newArrayList();
-       } else if (taskLaunchSpecs.size() == 1) {
-         AUDIT_LOG.info(Logging.auditEventString("scheduler_assigned_task", requestId,
-             taskLaunchSpecs.get(0).taskId,
-             nodeMonitorAddress.getHost()));
-       } else {
-         AUDIT_LOG.info(Logging.auditEventString("scheduler_get_task_no_task", requestId,
-                                                 nodeMonitorAddress.getHost()));
-       }
- 
-       String id = taskLaunchSpecs.get(0).taskId;
-       LOG.debug("The ID is: " + id);
-      
-       if (id.charAt(0) == 'G') {
-        LOG.debug("Gang!");
+      List<TTaskLaunchSpec> taskLaunchSpecs = taskPlacer.assignTask(nodeMonitorAddress);
+      if (taskLaunchSpecs == null || taskLaunchSpecs.size() > 1) {
+      LOG.error("Received invalid task placement for request " + requestId + ": " +
+                taskLaunchSpecs.toString());
+      return Lists.newArrayList();
+      } else if (taskLaunchSpecs.size() == 1) {
+      AUDIT_LOG.info(Logging.auditEventString("scheduler_assigned_task", requestId,
+          taskLaunchSpecs.get(0).taskId,
+          nodeMonitorAddress.getHost()));
+      } else {
+      AUDIT_LOG.info(Logging.auditEventString("scheduler_get_task_no_task", requestId,
+                                              nodeMonitorAddress.getHost()));
+      }
 
-       /*
-        * we need to block here, and wait until all the threads are ready
-        * the sleeping threads can synchronously register themselves to the task placer
-        * object, then the last one can recognize everyone is ready and fire.
-        * 
-        */ 
+      String id = taskLaunchSpecs.get(0).taskId;
+      LOG.debug("The ID is: " + id);
 
-        //int numTasks = ((UnconstrainedTaskPlacer)taskPlacer).unlaunchedTasks.size();
+      if (id.charAt(0) == 'G') {
+      LOG.debug("Gang!");
 
-        int sleptThreads = ((UnconstrainedTaskPlacer)taskPlacer).sleepingThreads.size();
-        
-        if (sleptThreads == 0) {
-          try {
-            LOG.debug("Thread is not the last to get_task for this gang, going to sleep.");
-          sleepThreadIndefinitely(taskPlacer);
-          LOG.debug("Sleeping thread awoke.");
-          } catch (InterruptedException e) {
-            // Handle the exception - maybe wrap it in a TException or return empty list
-            throw new TException("Task retrieval interrupted", e);
-            // Or: Thread.currentThread().interrupt(); return Collections.emptyList();
-          }
-        } else {
-          wakeAllThreads(taskPlacer);
+      /*
+      * we need to block here, and wait until all the threads are ready
+      * the sleeping threads can synchronously register themselves to the task placer
+      * object, then the last one can recognize everyone is ready and fire.
+      * 
+      */ 
+
+      //int numTasks = ((UnconstrainedTaskPlacer)taskPlacer).unlaunchedTasks.size();
+
+      int sleptThreads = ((UnconstrainedTaskPlacer)taskPlacer).sleepingThreads.size();
+
+      if (sleptThreads == 0) {
+      try {
+        LOG.debug("Thread is not the last to get_task for this gang, going to sleep.");
+      sleepThreadIndefinitely(taskPlacer);
+      LOG.debug("Sleeping thread awoke.");
+      } catch (InterruptedException e) {
+        // Handle the exception - maybe wrap it in a TException or return empty list
+        throw new TException("Task retrieval interrupted", e);
+        // Or: Thread.currentThread().interrupt(); return Collections.emptyList();
+      }
+      } else {
+      wakeAllThreads(taskPlacer);
+      }
+      }
+
+      if (taskPlacer.allTasksPlaced()) {
+      LOG.debug("All tasks placed for request " + requestId);
+      requestTaskPlacers.remove(requestId);
+      if (useCancellation) {
+        Set<THostPort> outstandingNodeMonitors =
+            taskPlacer.getOutstandingNodeMonitorsForCancellation();
+        for (THostPort nodeMonitorToCancel : outstandingNodeMonitors) {
+          cancellationService.addCancellation(requestId, nodeMonitorToCancel);
         }
       }
- 
-       if (taskPlacer.allTasksPlaced()) {
-         LOG.debug("All tasks placed for request " + requestId);
-         requestTaskPlacers.remove(requestId);
-         if (useCancellation) {
-           Set<THostPort> outstandingNodeMonitors =
-               taskPlacer.getOutstandingNodeMonitorsForCancellation();
-           for (THostPort nodeMonitorToCancel : outstandingNodeMonitors) {
-             cancellationService.addCancellation(requestId, nodeMonitorToCancel);
-           }
-         }
-       }
-       if (lock.isHeldByCurrentThread()) {
-         lock.unlock();
-       }
-       return taskLaunchSpecs;
-     //}
+      }
+      if (lock.isHeldByCurrentThread()) {
+      lock.unlock();
+      }
+      return taskLaunchSpecs;
    }
  
    /**

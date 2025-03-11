@@ -24,12 +24,11 @@ public class SparrowConf {
   public final static String LOG_LEVEL = "log_level";
 
   public final static String SCHEDULER_THRIFT_PORT = "scheduler.thrift.port";
-  public final static String SCHEDULER_THRIFT_THREADS =
-      "scheduler.thrift.threads";
+  public final static String SCHEDULER_THRIFT_THREADS = "scheduler.thrift.threads";
+  
   // Listen port for the state store --> scheduler interface
   public final static String SCHEDULER_STATE_THRIFT_PORT = "scheduler.state.thrift.port";
-  public final static String SCHEDULER_STATE_THRIFT_THREADS =
-      "scheduler.state.thrift.threads";
+  public final static String SCHEDULER_STATE_THRIFT_THREADS = "scheduler.state.thrift.threads";
 
   /**
    * Whether the scheduler should cancel outstanding reservations when all of a job's tasks have
@@ -49,8 +48,8 @@ public class SparrowConf {
   public final static String INTERNAL_THRIFT_PORTS = "internal_agent.thrift.ports";
 
   public final static String NM_THRIFT_THREADS = "agent.thrift.threads";
-  public final static String INTERNAL_THRIFT_THREADS =
-      "internal_agent.thrift.threads";
+  public final static String INTERNAL_THRIFT_THREADS ="internal_agent.thrift.threads";
+
   /** Type of task scheduler to use on node monitor. Values: "fifo," "round_robin, " "priority." */
   public final static String NM_TASK_SCHEDULER_TYPE = "node_monitor.task_scheduler";
 

@@ -55,7 +55,7 @@ public class SimpleFrontend implements FrontendService.Iface {
   public static final String EXPERIMENT_S = "experiment_s";
   public static final int DEFAULT_EXPERIMENT_S = 10; // Changed experiment duration to ten seconds for quicker testing
   public static final int NUMBER_OF_MESSAGES  = 100; // Number of messages we will send out
-  public static final double DEFAULT_GANG_RATE = 0.0; // Probability is currently 20%
+  public static final double DEFAULT_GANG_RATE = 0.2; // Probability is currently 20%
 
   public static final String JOB_ARRIVAL_PERIOD_MILLIS = "job_arrival_period_millis";
   public static final int DEFAULT_JOB_ARRIVAL_PERIOD_MILLIS = 100;
@@ -268,7 +268,6 @@ public class SimpleFrontend implements FrontendService.Iface {
     message.get(bytes);
     String receivedTaskId = new String(bytes);
     LOG.debug("[RECEIVED] taskID: " + receivedTaskId + " with [HASHSET] size: " + hashSet.size());
-    LOG.debug("[HASHSET OBJECT] has hash: " + System.identityHashCode(hashSet));
     
     // Remove the message from the hashset if seen
     if (hashSet.contains(receivedTaskId))
