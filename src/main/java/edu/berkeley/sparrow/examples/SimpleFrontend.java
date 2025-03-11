@@ -226,7 +226,7 @@ public class SimpleFrontend implements FrontendService.Iface {
           Thread.sleep(1);
       }
 
-      LOG.debug("All tasks have been sent!");
+      LOG.debug("All tasks in " + frontendInstance + " have been sent!");
 
       taskLauncher.shutdown();
       try {
@@ -240,7 +240,7 @@ public class SimpleFrontend implements FrontendService.Iface {
       while (messagesSeen < messagesSent)
         Thread.sleep(1);
 
-      LOG.debug("All tasks have been completed!");
+      LOG.debug("All tasks in " + frontendInstance + " have been completed!");
 
       // Calculate elapsed time
       long currentTime = System.currentTimeMillis();
@@ -262,12 +262,13 @@ public class SimpleFrontend implements FrontendService.Iface {
     byte[] bytes = new byte[message.remaining()];
     message.get(bytes);
     String receivedTaskId = new String(bytes);
-    LOG.debug("[RECEIVED] taskID: " + receivedTaskId);
+    LOG.debug("[RECEIVED] taskID: " + receivedTaskId + hashSet.isEmpty());
     
     // Remove the message from the hashset if seen
     if (hashSet.contains(receivedTaskId))
         hashSet.remove(receivedTaskId);
 
+        
     if (hashSet.isEmpty())
         shouldBePaused = false;
 
