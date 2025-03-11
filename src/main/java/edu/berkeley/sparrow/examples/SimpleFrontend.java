@@ -262,7 +262,7 @@ public class SimpleFrontend implements FrontendService.Iface {
     byte[] bytes = new byte[message.remaining()];
     message.get(bytes);
     String receivedTaskId = new String(bytes);
-    LOG.debug("[RECEIVED] taskID: " + receivedTaskId + hashSet.isEmpty());
+    LOG.debug("[RECEIVED] taskID: " + receivedTaskId);
     
     // Remove the message from the hashset if seen
     if (hashSet.contains(receivedTaskId))
