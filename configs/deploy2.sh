@@ -91,13 +91,13 @@ sleep 3
 # Start the frontend (in background) that schedules from first scheduler 
 echo "Starting first frontend..."
 java -cp $CLASS_PATH edu.berkeley.sparrow.examples.SimpleFrontend -c configs/frontend.conf &
-frontend_pid=$!
+frontend_pid_1=$!
 echo "$frontend_pid_1" >> "$pid_file" 
 
 # Start the frontend 2 (in background) that schedules from second scheduler
 echo "Starting second frontend..."
 java -cp $CLASS_PATH edu.berkeley.sparrow.examples.SimpleFrontend -c configs/frontend-2.conf &
-frontend_pid=$!
+frontend_pid_2=$!
 echo "$frontend_pid_2" >> "$pid_file" 
 
 
