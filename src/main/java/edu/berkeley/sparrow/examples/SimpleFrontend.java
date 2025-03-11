@@ -72,11 +72,15 @@ public class SimpleFrontend implements FrontendService.Iface {
   public static final String DEFAULT_SCHEDULER_HOST = "localhost";
   public static final String SCHEDULER_PORT = "scheduler_port";
 
+  /** Running multiple frontend instances.  */
+  public static final String FRONT_END_INSTANCE = "front_end_instance";
+  public static final String DEFAULT_FRONT_END_INSTANCE = "f1";
+
   private boolean shouldBePaused; // Determine if frontend should stall 
 
   int messagesSeen = 0;
   int messagesSent = 0;
-  Set<Integer> hashSet = new HashSet<>();
+  Set<String> hashSet = new HashSet<>();
 
   /**
    * Default application name.
@@ -95,10 +99,12 @@ public class SimpleFrontend implements FrontendService.Iface {
   private class JobLaunchRunnable implements Runnable {
     private int tasksPerJob;
     private int taskDurationMillis;
+    private String frontendInstance;
 
-    public JobLaunchRunnable(int tasksPerJob, int taskDurationMillis) {
+    public JobLaunchRunnable(int tasksPerJob, int taskDurationMillis, String frontendInstance) {
       this.tasksPerJob = tasksPerJob;
       this.taskDurationMillis = taskDurationMillis;
+      this.frontendInstance = frontendInstance;
     }
 
     @Override
@@ -140,14 +146,14 @@ public class SimpleFrontend implements FrontendService.Iface {
         TTaskSpec spec = new TTaskSpec();
         
         if (isGang) {
-          spec.setTaskId("G_" + curId);
+          spec.setTaskId("G_" + frontendInstance + "_" + curId);
           // This message must be received before we continue
-          hashSet.add(curId);
+          hashSet.add(frontendInstance + "_" + curId);
         }
         else {
-          spec.setTaskId(Integer.toString(curId));
+          spec.setTaskId(frontendInstance + "_" + curId);
         }
-        taskIds += curId + ", ";
+        taskIds += frontendInstance + "_" + curId + ", ";
         curId++;
         spec.setMessage(message.array());
         tasks.add(spec);
@@ -195,6 +201,7 @@ public class SimpleFrontend implements FrontendService.Iface {
           " milliseconds and running experiment for " + experimentDurationS + " seconds.");
       int tasksPerJob = conf.getInt(TASKS_PER_JOB, DEFAULT_TASKS_PER_JOB);
       int taskDurationMillis = conf.getInt(TASK_DURATION_MILLIS, DEFAULT_TASK_DURATION_MILLIS);
+      String frontendInstance = conf.getString(FRONT_END_INSTANCE, DEFAULT_FRONT_END_INSTANCE);
 
       int schedulerPort = conf.getInt(SCHEDULER_PORT,
           SchedulerThrift.DEFAULT_SCHEDULER_THRIFT_PORT);
@@ -202,7 +209,7 @@ public class SimpleFrontend implements FrontendService.Iface {
       client = new SparrowFrontendClient();
       client.initialize(new InetSocketAddress(schedulerHost, schedulerPort), APPLICATION_ID, this);
 
-      JobLaunchRunnable runnable = new JobLaunchRunnable(tasksPerJob, taskDurationMillis);
+      JobLaunchRunnable runnable = new JobLaunchRunnable(tasksPerJob, taskDurationMillis, frontendInstance);
       ScheduledThreadPoolExecutor taskLauncher = new ScheduledThreadPoolExecutor(1);
       PausableScheduler pausableScheduler = new PausableScheduler(taskLauncher);
       pausableScheduler.scheduleAtFixedRate(runnable, 0, arrivalPeriodMillis, TimeUnit.MILLISECONDS);
@@ -252,14 +259,14 @@ public class SimpleFrontend implements FrontendService.Iface {
   public void frontendMessage(TFullTaskId taskId, int status, ByteBuffer message)
       throws TException {
     // We don't use messages here, so just log it.
-    byte[] bytes = Serialization.getByteBufferContents(message);
-    ByteBuffer readBuffer = ByteBuffer.wrap(bytes);
-    int result = readBuffer.getInt();
-    LOG.debug("[RECEIVED] taskID: " + result);
+    byte[] bytes = new byte[message.remaining()];
+    message.get(bytes);
+    String receivedTaskId = new String(bytes);
+    LOG.debug("[RECEIVED] taskID: " + receivedTaskId);
     
     // Remove the message from the hashset if seen
-    if (hashSet.contains(result))
-        hashSet.remove(result);
+    if (hashSet.contains(receivedTaskId))
+        hashSet.remove(receivedTaskId);
 
     if (hashSet.isEmpty())
         shouldBePaused = false;

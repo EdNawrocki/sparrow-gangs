@@ -88,7 +88,7 @@ sleep 3
 start_and_verify_process "Second backend" "java -cp $CLASS_PATH edu.berkeley.sparrow.examples.SimpleBackend -c configs/backend-2.conf" || exit 1
 sleep 3
 
-# Start the frontend (in foreground)
+# Start the frontend (in background)
 echo "Starting frontend..."
 java -cp $CLASS_PATH edu.berkeley.sparrow.examples.SimpleFrontend -c configs/frontend.conf &
 frontend_pid=$!
