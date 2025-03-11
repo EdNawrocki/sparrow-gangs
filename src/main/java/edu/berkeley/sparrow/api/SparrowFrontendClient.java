@@ -45,25 +45,9 @@ public class SparrowFrontendClient {
 
   private final static Logger LOG = Logger.getLogger(SparrowFrontendClient.class);
   private final static int NUM_CLIENTS = 8; // Number of concurrent requests we support
-  private final static int DEFAULT_LISTEN_PORT = 50201;
 
   BlockingQueue<SchedulerService.Client> clients =
       new LinkedBlockingQueue<SchedulerService.Client>();
-
-  /**
-   * Initialize a connection to a sparrow scheduler.
-   * @param sparrowSchedulerAddr. The socket address of the Sparrow scheduler.
-   * @param app. The application id. Note that this must be consistent across frontends
-   *             and backends.
-   * @param frontendServer. A class which implements the frontend server interface (for
-   *                        communication from Sparrow).
-   * @throws IOException
-   */
-  public void initialize(InetSocketAddress sparrowSchedulerAddr, String app,
-      FrontendService.Iface frontendServer)
-      throws TException, IOException {
-    initialize(sparrowSchedulerAddr, app, frontendServer, DEFAULT_LISTEN_PORT);
-  }
 
   /**
    * Initialize a connection to a sparrow scheduler.

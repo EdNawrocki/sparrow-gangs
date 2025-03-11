@@ -55,7 +55,7 @@ public class SimpleFrontend implements FrontendService.Iface {
   public static final String EXPERIMENT_S = "experiment_s";
   public static final int DEFAULT_EXPERIMENT_S = 10; // Changed experiment duration to ten seconds for quicker testing
   public static final int NUMBER_OF_MESSAGES  = 100; // Number of messages we will send out
-  public static final double DEFAULT_GANG_RATE = .2; // Probability is currently 20%
+  public static final double DEFAULT_GANG_RATE = 0.0; // Probability is currently 20%
 
   public static final String JOB_ARRIVAL_PERIOD_MILLIS = "job_arrival_period_millis";
   public static final int DEFAULT_JOB_ARRIVAL_PERIOD_MILLIS = 100;
@@ -76,6 +76,10 @@ public class SimpleFrontend implements FrontendService.Iface {
   /** Running multiple frontend instances.  */
   public static final String FRONT_END_INSTANCE = "front_end_instance";
   public static final String DEFAULT_FRONT_END_INSTANCE = "f1";
+
+  /** Port for frontend to listen on.  */
+  private final static String LISTEN_PORT = "listen_port";
+  private final static int DEFAULT_LISTEN_PORT = 50201;
 
   private boolean shouldBePaused; // Determine if frontend should stall 
 
@@ -206,8 +210,9 @@ public class SimpleFrontend implements FrontendService.Iface {
       int schedulerPort = conf.getInt(SCHEDULER_PORT,
           SchedulerThrift.DEFAULT_SCHEDULER_THRIFT_PORT);
       String schedulerHost = conf.getString(SCHEDULER_HOST, DEFAULT_SCHEDULER_HOST);
+      int listenPort = conf.getInt(LISTEN_PORT, DEFAULT_LISTEN_PORT);
       client = new SparrowFrontendClient();
-      client.initialize(new InetSocketAddress(schedulerHost, schedulerPort), APPLICATION_ID, this);
+      client.initialize(new InetSocketAddress(schedulerHost, schedulerPort), APPLICATION_ID, this, listenPort);
 
       JobLaunchRunnable runnable = new JobLaunchRunnable(tasksPerJob, taskDurationMillis, frontendInstance);
       ScheduledThreadPoolExecutor taskLauncher = new ScheduledThreadPoolExecutor(1);
