@@ -55,7 +55,8 @@ public class SimpleFrontend implements FrontendService.Iface {
   public static final String EXPERIMENT_S = "experiment_s";
   public static final int DEFAULT_EXPERIMENT_S = 10; // Changed experiment duration to ten seconds for quicker testing
   public static final int NUMBER_OF_MESSAGES  = 100; // Number of messages we will send out
-  public static final double DEFAULT_GANG_RATE = 0.2; // Probability is currently 20%
+  public static final String GANG_SCHED_RATE = "gang_schedule_rate";
+  public static final double DEFAULT_GANG_RATE = 0.0; 
 
   public static final String JOB_ARRIVAL_PERIOD_MILLIS = "job_arrival_period_millis";
   public static final int DEFAULT_JOB_ARRIVAL_PERIOD_MILLIS = 100;
@@ -104,11 +105,13 @@ public class SimpleFrontend implements FrontendService.Iface {
     private int tasksPerJob;
     private int taskDurationMillis;
     private String frontendInstance;
+    private double gangSchedRate;
 
-    public JobLaunchRunnable(int tasksPerJob, int taskDurationMillis, String frontendInstance) {
+    public JobLaunchRunnable(int tasksPerJob, int taskDurationMillis, String frontendInstance, double gangSchedRate) {
       this.tasksPerJob = tasksPerJob;
       this.taskDurationMillis = taskDurationMillis;
       this.frontendInstance = frontendInstance;
+      this.gangSchedRate = gangSchedRate;
     }
 
     @Override
@@ -133,7 +136,7 @@ public class SimpleFrontend implements FrontendService.Iface {
       boolean isGang = false;
 
       // Determine if we should gang schedule
-      if (curTasksPerJob > 1 && Math.random() < DEFAULT_GANG_RATE){
+      if (curTasksPerJob > 1 && Math.random() < gangSchedRate){
         isGang = true;
       }
 
@@ -206,6 +209,7 @@ public class SimpleFrontend implements FrontendService.Iface {
       int tasksPerJob = conf.getInt(TASKS_PER_JOB, DEFAULT_TASKS_PER_JOB);
       int taskDurationMillis = conf.getInt(TASK_DURATION_MILLIS, DEFAULT_TASK_DURATION_MILLIS);
       String frontendInstance = conf.getString(FRONT_END_INSTANCE, DEFAULT_FRONT_END_INSTANCE);
+      double gangSchedRate = conf.getDouble(GANG_SCHED_RATE, DEFAULT_GANG_RATE);
 
       int schedulerPort = conf.getInt(SCHEDULER_PORT,
           SchedulerThrift.DEFAULT_SCHEDULER_THRIFT_PORT);
@@ -214,7 +218,7 @@ public class SimpleFrontend implements FrontendService.Iface {
       client = new SparrowFrontendClient();
       client.initialize(new InetSocketAddress(schedulerHost, schedulerPort), APPLICATION_ID, this, listenPort);
 
-      JobLaunchRunnable runnable = new JobLaunchRunnable(tasksPerJob, taskDurationMillis, frontendInstance);
+      JobLaunchRunnable runnable = new JobLaunchRunnable(tasksPerJob, taskDurationMillis, frontendInstance, gangSchedRate);
       ScheduledThreadPoolExecutor taskLauncher = new ScheduledThreadPoolExecutor(1);
       PausableScheduler pausableScheduler = new PausableScheduler(taskLauncher);
       pausableScheduler.scheduleAtFixedRate(runnable, 0, arrivalPeriodMillis, TimeUnit.MILLISECONDS);
