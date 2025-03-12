@@ -45,7 +45,7 @@ public class SparrowFrontendClient {
 
   private final static Logger LOG = Logger.getLogger(SparrowFrontendClient.class);
   private final static int NUM_CLIENTS = 8; // Number of concurrent requests we support
-
+  private final static int DEFAULT_LISTEN_PORTT = 50201;
   BlockingQueue<SchedulerService.Client> clients =
       new LinkedBlockingQueue<SchedulerService.Client>();
 
@@ -59,6 +59,13 @@ public class SparrowFrontendClient {
    * @param listenPort. The port on which to listen for request from the scheduler.
    * @throws IOException
    */
+
+    public void initialize(InetSocketAddress sparrowSchedulerAddr, String app,
+       FrontendService.Iface frontendServer)
+       throws TException, IOException {
+     initialize(sparrowSchedulerAddr, app, frontendServer, DEFAULT_LISTEN_PORTT);
+   }
+
   public void initialize(InetSocketAddress sparrowSchedulerAddr, String app,
       FrontendService.Iface frontendServer, int listenPort)
       throws TException, IOException {
