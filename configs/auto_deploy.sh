@@ -65,7 +65,7 @@ node_monitors_list=""
 for (( i=1; i<=NUM_INSTANCES; i++ )); do
     # Calculate ports for this daemon.
     schedulerPort=$(( (i+1)*10000 + 503 ))        # e.g., instance 1: 20503, instance 2: 30503, etc.
-    getTaskPort=$(( schedulerPort - 4 ))          # e.g., 20499, 30499, etc.
+    getTaskPort=$(( schedulerPort + 4 ))          # e.g., 20507, 30507, etc.
     agentPort=$(( schedulerPort - 2 ))            # e.g., 20501, 30501, etc.
     internalAgentPort=$(( schedulerPort - 1 ))    # e.g., 20502, 30502, etc.
     
@@ -93,7 +93,11 @@ done
 
 # Update each daemon conf with the complete node_monitors_list
 for conf in "$DAEMON_CONF_DIR"/*.conf; do
-    sed -i "s/^static.node_monitors = .*/static.node_monitors = $node_monitors_list/" "$conf"
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' "s/^static.node_monitors = .*/static.node_monitors = ${node_monitors_list}/" "$conf"
+  else
+    sed -i "s/^static.node_monitors = .*/static.node_monitors = ${node_monitors_list}/" "$conf"
+  fi
 done
 
 # Generate backend configuration files
