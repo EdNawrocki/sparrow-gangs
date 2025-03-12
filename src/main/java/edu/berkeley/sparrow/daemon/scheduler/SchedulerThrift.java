@@ -44,6 +44,8 @@ public class SchedulerThrift implements SchedulerService.Iface, GetTaskService.I
   private final static int DEFAULT_SCHEDULER_THRIFT_THREADS = 8;
   public final static int DEFAULT_GET_TASK_PORT = 20507;
 
+  public final static int DEFAULT_MAX_GANG_SIZE = 8;
+
   private Scheduler scheduler = new Scheduler();
 
   /**
@@ -59,6 +61,7 @@ public class SchedulerThrift implements SchedulerService.Iface, GetTaskService.I
         DEFAULT_SCHEDULER_THRIFT_PORT);
     int threads = conf.getInt(SparrowConf.SCHEDULER_THRIFT_THREADS,
         DEFAULT_SCHEDULER_THRIFT_THREADS);
+    int maxGangSize = conf.getInt(SparrowConf.MAX_GANG_SIZE, DEFAULT_MAX_GANG_SIZE);
     String hostname = Network.getHostName(conf);
     InetSocketAddress addr = new InetSocketAddress(hostname, port);
     scheduler.initialize(conf, addr);
@@ -67,7 +70,7 @@ public class SchedulerThrift implements SchedulerService.Iface, GetTaskService.I
         DEFAULT_GET_TASK_PORT);
     GetTaskService.Processor<GetTaskService.Iface> getTaskprocessor =
         new GetTaskService.Processor<GetTaskService.Iface>(this);
-    TServers.launchThreadedThriftServer(getTaskPort, 8, getTaskprocessor);
+    TServers.launchThreadedThriftServer(getTaskPort, maxGangSize, getTaskprocessor); 
   }
 
   @Override

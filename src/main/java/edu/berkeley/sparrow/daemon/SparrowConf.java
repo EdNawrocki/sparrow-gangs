@@ -25,7 +25,7 @@ public class SparrowConf {
 
   public final static String SCHEDULER_THRIFT_PORT = "scheduler.thrift.port";
   public final static String SCHEDULER_THRIFT_THREADS = "scheduler.thrift.threads";
-  
+
   // Listen port for the state store --> scheduler interface
   public final static String SCHEDULER_STATE_THRIFT_PORT = "scheduler.state.thrift.port";
   public final static String SCHEDULER_STATE_THRIFT_THREADS = "scheduler.state.thrift.threads";
@@ -89,4 +89,8 @@ public class SparrowConf {
   
   public final static String SPREAD_EVENLY_TASK_SET_SIZE = "spread_evenly_task_set_size";
   public final static int DEFAULT_SPREAD_EVENLY_TASK_SET_SIZE = 1;
+
+  /** Maximum size of gangs that scheduler can support. */
+  public final static String MAX_GANG_SIZE = "max_gang_size";
+
 }

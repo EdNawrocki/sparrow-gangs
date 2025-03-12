@@ -411,32 +411,31 @@ import org.apache.log4j.Logger;
       LOG.debug("The ID is: " + id);
 
       if (id.charAt(0) == 'G') {
-      LOG.debug("Gang!");
+        LOG.debug("Gang!");
+        /*
+        * we need to block here, and wait until all the threads are ready
+        * the sleeping threads can synchronously register themselves to the task placer
+        * object, then the last one can recognize everyone is ready and fire.
+        * 
+        */ 
+        int numTasks = ((UnconstrainedTaskPlacer)taskPlacer).unlaunchedTasks.size();
+        // int sleptThreads = ((UnconstrainedTaskPlacer)taskPlacer).sleepingThreads.size();
 
-      /*
-      * we need to block here, and wait until all the threads are ready
-      * the sleeping threads can synchronously register themselves to the task placer
-      * object, then the last one can recognize everyone is ready and fire.
-      * 
-      */ 
-
-      //int numTasks = ((UnconstrainedTaskPlacer)taskPlacer).unlaunchedTasks.size();
-
-      int sleptThreads = ((UnconstrainedTaskPlacer)taskPlacer).sleepingThreads.size();
-
-      if (sleptThreads == 0) {
-      try {
-        LOG.debug("Thread is not the last to get_task for this gang, going to sleep.");
-      sleepThreadIndefinitely(taskPlacer);
-      LOG.debug("Sleeping thread awoke.");
-      } catch (InterruptedException e) {
-        // Handle the exception - maybe wrap it in a TException or return empty list
-        throw new TException("Task retrieval interrupted", e);
-        // Or: Thread.currentThread().interrupt(); return Collections.emptyList();
-      }
-      } else {
-      wakeAllThreads(taskPlacer);
-      }
+        if (numTasks > 1) { 
+          try {
+            LOG.debug("Thread is not the last to get_task for this gang, going to sleep.");
+            sleepThreadIndefinitely(taskPlacer);
+            LOG.debug("Sleeping thread awoke.");
+          } 
+          catch (InterruptedException e) {
+            // Handle the exception - maybe wrap it in a TException or return empty list
+            throw new TException("Task retrieval interrupted", e);
+            // Or: Thread.currentThread().interrupt(); return Collections.emptyList();
+          }
+        } 
+        else {
+          wakeAllThreads(taskPlacer);
+        }
       }
 
       if (taskPlacer.allTasksPlaced()) {
